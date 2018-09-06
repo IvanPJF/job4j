@@ -5,12 +5,12 @@ package ru.job4j.calculate;
  *@since 06.09.2018
  *@version 0.1
  */
-public class Calculate{
+public class Calculate {
 	
 	/** main метод выводит на экран строку "Hello World"
 	 *@param args массив текстовых строк
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		System.out.println("Hello World");
 	}
 	

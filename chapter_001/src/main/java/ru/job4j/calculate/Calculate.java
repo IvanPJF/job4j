@@ -6,20 +6,20 @@ package ru.job4j.calculate;
  *@version 0.1
  */
 public class Calculate {
-	
-	/** main метод выводит на экран строку "Hello World"
-	 *@param args массив текстовых строк
-	 */
-	public static void main(String[] args) {
-		System.out.println("Hello World");
-	}
-	
-	/**
-	 * Method echo.
-	 * @param name Your name.
-	 * @return Echo plus your name.
-	 */
-	public String echo(String name) {
-		return "Echo, echo, echo : " + name;
-	}
+
+    /** main метод выводит на экран строку "Hello World"
+     *@param args массив текстовых строк
+     */
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+
+    /**
+     * Method echo.
+     * @param name Your name.
+     * @return Echo plus your name.
+     */
+    public String echo(String name) {
+        return "Echo, echo, echo : " + name;
+    }
 }

@@ -16,10 +16,10 @@ public class CalculateTest {
 	@Test
 	public void whenTakeNameThenTreeEchoPlusName() {
 		String input = "Ivan Krinitsyn";
-		String expect = "Echo, echo, echo : Ivan Krinitsyn"; 
+		String expect = "Echo, echo, echo : Ivan Krinitsyn";
 		Calculate calc = new Calculate();
 		String result = calc.echo(input);
 		assertThat(result, is(expect));
 	}
- 
+
 }

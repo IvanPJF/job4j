@@ -1,8 +1,8 @@
 /**
-* Package for calculate task.
-*
-* @author IvanPJF (teaching-light@yandex.ru)
-* @version $Id$
-* @since 0.1
-*/
+ * Package for calculate task.
+ *
+ * @author IvanPJF (teaching-light@yandex.ru)
+ * @since 07.09.2018
+ * @version $Id$
+ */
 package ru.job4j.calculate;

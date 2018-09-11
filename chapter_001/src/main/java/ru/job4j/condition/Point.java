@@ -6,10 +6,8 @@ package ru.job4j.condition;
  *@version 0.2
  */
 public class Point {
-    //Поля объекта.
     private int x;
     private int y;
-    //Конструктор координат точки.
     public  Point(int x, int y) {
         this.x = x;
         this.y = y;

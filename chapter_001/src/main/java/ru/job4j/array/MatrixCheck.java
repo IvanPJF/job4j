@@ -17,11 +17,9 @@ public class MatrixCheck {
         int size = data.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (i == j) {
-                    if (data[i][j] != data[0][0]) {
-                        result = false;
-                        break;
-                    }
+                if (data[i][i] != data[0][0]) {
+                    result = false;
+                    break;
                 }
                 if ((i + j) == size - 1) {
                     if (data[i][j] != data[0][size - 1]) {

@@ -22,22 +22,14 @@ public class SumArray {
         while (work) {
             if (indexfirst != first.length && indexsecond != second.length) {
                 if (first[indexfirst] <= second[indexsecond]) {
-                    third[indexthird] = first[indexfirst];
-                    indexthird++;
-                    indexfirst++;
+                    third[indexthird++] = first[indexfirst++];
                 } else {
-                    third[indexthird] = second[indexsecond];
-                    indexthird++;
-                    indexsecond++;
+                    third[indexthird++] = second[indexsecond++];
                 }
             } else if (indexfirst == first.length) {
-                third[indexthird] = second[indexsecond];
-                indexthird++;
-                indexsecond++;
+                third[indexthird++] = second[indexsecond++];
             } else {
-                third[indexthird] = first[indexfirst];
-                indexthird++;
-                indexfirst++;
+                third[indexthird++] = first[indexfirst++];
             }
             work = indexthird != third.length;
         }

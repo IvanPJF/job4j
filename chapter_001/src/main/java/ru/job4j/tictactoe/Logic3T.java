@@ -3,7 +3,7 @@ package ru.job4j.tictactoe;
 /**Проверка логики игры.
  *@author IvanPJF (teaching-light@yandex.ru)
  *@since 20.09.2018
- *@version 0.2
+ *@version 0.3
  */
 public class Logic3T {
     private final Figure3T[][] table;
@@ -19,9 +19,7 @@ public class Logic3T {
      */
     public boolean isWin(boolean forX) {
         int size = table.length;
-        boolean result;
-        int count;
-        result = true;
+        boolean result = true;
         boolean[][] winCell = new boolean[size][size];
         for (int out = 0; out < size; out++) {
             for (int in = 0; in < size; in++) {
@@ -32,16 +30,16 @@ public class Logic3T {
                 }
             }
         }
-        for (int out = 1; out < size; out++) {
-            if (!(winCell[0][0] && winCell[out][out])) {
+        for (int out = 0; out < size; out++) {
+            if (!winCell[out][out]) {
                 result = false;
                 break;
             }
         }
         if (!result) {
             result = true;
-            for (int out = 1; out < size; out++) {
-                if (!(winCell[0][size - 1] && winCell[out][size - out - 1])) {
+            for (int out = 0; out < size; out++) {
+                if (!winCell[out][size - out - 1]) {
                     result = false;
                     break;
                 }
@@ -50,16 +48,13 @@ public class Logic3T {
         if (!result) {
             for (int out = 0; out < size; out++) {
                 result = true;
-                count = 1;
-                for (int in = 1; in < size; in++) {
-                    if (!(winCell[out][0] && winCell[out][in])) {
+                for (int in = 0; in < size; in++) {
+                    if (!winCell[out][in]) {
                         result = false;
                         break;
-                    } else {
-                        count++;
                     }
                 }
-                if (count == size) {
+                if (result) {
                     break;
                 }
             }
@@ -67,16 +62,13 @@ public class Logic3T {
         if (!result) {
             for (int out = 0; out < size; out++) {
                 result = true;
-                count = 1;
-                for (int in = 1; in < size; in++) {
-                    if (!(winCell[0][out] && winCell[in][out])) {
+                for (int in = 0; in < size; in++) {
+                    if (!winCell[in][out]) {
                         result = false;
                         break;
-                    } else {
-                        count++;
                     }
                 }
-                if (count == size) {
+                if (result) {
                     break;
                 }
             }
@@ -111,6 +103,7 @@ public class Logic3T {
                 if (!(table[out][in].hasMarkX())
                         && !(table[out][in].hasMarkO())) {
                     result = true;
+                    out = table.length;
                     break;
                 }
             }

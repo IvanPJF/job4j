@@ -16,7 +16,12 @@ public class PaintTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         new Paint().draw(new Square());
-        String expect = new StringBuilder().append("*****\n").append("*****\n").append("*****\r\n").toString();
+        String ln = System.lineSeparator();
+        String expect =
+                new StringBuilder()
+                        .append("*****").append(ln)
+                        .append("*****").append(ln)
+                        .append("*****").append(ln).toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(stdout);
     }
@@ -27,7 +32,12 @@ public class PaintTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         new Paint().draw(new Triangle());
-        String expect = new StringBuilder().append("  ^  \n").append(" ^^^ \n").append("^^^^^\r\n").toString();
+        String ln = System.lineSeparator();
+        String expect =
+                new StringBuilder()
+                        .append("  ^  ").append(ln)
+                        .append(" ^^^ ").append(ln)
+                        .append("^^^^^").append(ln).toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(stdout);
     }

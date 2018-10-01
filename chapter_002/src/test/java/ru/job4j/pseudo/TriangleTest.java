@@ -10,7 +10,12 @@ public class TriangleTest {
     @Test
     public void whenPaintTriangle() {
         Triangle result = new Triangle();
-        String expect = new StringBuilder().append("  ^  \n").append(" ^^^ \n").append("^^^^^").toString();
+        String ln = System.lineSeparator();
+        String expect =
+                new StringBuilder()
+                        .append("  ^  ").append(ln)
+                        .append(" ^^^ ").append(ln)
+                        .append("^^^^^").toString();
         assertThat(result.draw(), is(expect));
     }
 }

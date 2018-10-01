@@ -14,7 +14,12 @@ public class Triangle implements Shape {
      */
     @Override
     public String draw() {
-        StringBuilder result = new StringBuilder().append("  ^  \n").append(" ^^^ \n").append("^^^^^");
+        String ln = System.lineSeparator();
+        StringBuilder result =
+                new StringBuilder()
+                        .append("  ^  ").append(ln)
+                        .append(" ^^^ ").append(ln)
+                        .append("^^^^^");
         return result.toString();
     }
 }

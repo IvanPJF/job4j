@@ -10,7 +10,12 @@ public class SquareTest {
     @Test
     public void whenPaintSquare() {
         Square result = new Square();
-        String expect = new StringBuilder().append("*****\n").append("*****\n").append("*****").toString();
+        String ln = System.lineSeparator();
+        String expect =
+                new StringBuilder()
+                        .append("*****").append(ln)
+                        .append("*****").append(ln)
+                        .append("*****").toString();
         assertThat(result.draw(), is(expect));
     }
 }

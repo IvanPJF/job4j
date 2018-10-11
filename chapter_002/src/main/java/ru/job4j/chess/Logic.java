@@ -19,28 +19,25 @@ public class Logic {
         this.figures[this.index++] = figure;
     }
 
-    public boolean move(Cell source, Cell dest) {
-        boolean rst = false;
+    public boolean move(Cell source, Cell dest) throws FigureNotFoundException, ImpossibleMoveException, OccupiedWayException {
         int index = this.findBy(source);
-        if (index != -1) {
-            try {
-                Cell[] steps = this.figures[index].way(source, dest);
-                for (Figure figure : this.figures) {
-                    if (figure != null) {
-                        for (Cell step : steps) {
-                            if (figure.position().equals(step)) {
-                                throw new OccupiedWayException("Путь не свободен.");
-                            }
-                        }
+        if (index == -1) {
+            throw new FigureNotFoundException("Нет фигуры");
+        }
+        boolean rst = false;
+        Cell[] steps = this.figures[index].way(source, dest);
+        for (Figure figure : this.figures) {
+            if (figure != null) {
+                for (Cell step : steps) {
+                    if (figure.position().equals(step)) {
+                        throw new OccupiedWayException("Путь не свободен.");
                     }
                 }
-                if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                    rst = true;
-                    this.figures[index] = this.figures[index].copy(dest);
-                }
-            } catch (OccupiedWayException | ImpossibleMoveException owe) {
-                rst = false;
             }
+        }
+        if (steps.length > 0) {
+            this.figures[index] = this.figures[index].copy(dest);
+            rst = true;
         }
         return rst;
     }

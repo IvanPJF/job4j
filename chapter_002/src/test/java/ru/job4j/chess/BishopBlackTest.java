@@ -2,56 +2,42 @@ package ru.job4j.chess;
 
 import org.junit.Test;
 import ru.job4j.chess.firuges.Cell;
-import ru.job4j.chess.firuges.Figure;
 import ru.job4j.chess.firuges.black.BishopBlack;
-import ru.job4j.chess.firuges.black.PawnBlack;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class BishopBlackTest {
 
-    /**
-     * Проверка возможности хода.
-     * @param moving Фигура, которая перемещается по доске.
-     * @param stand Фигура, которая может служить препятствием(стоит на месте) движущейся фигуре.
-     * @param source Начальная точка.
-     * @param dest Целевая точка.
-     */
-    public boolean start(Figure moving, Figure stand, Cell source, Cell dest) {
-        Logic logic = new Logic();
-        logic.add(moving);
-        logic.add(stand);
-        return logic.move(source, dest);
+    @Test
+    public void whenBishopBlackMoveFromA1ToH8() {
+        BishopBlack bishop = new BishopBlack(Cell.A1);
+        Cell[] actual = bishop.way(bishop.position(), Cell.H8);
+        Cell[] expected = {Cell.B2, Cell.C3, Cell.D4, Cell.E5, Cell.F6, Cell.G7, Cell.H8};
+        assertThat(actual, is(expected));
     }
 
     @Test
-    public void whenPawnBlackPreventBishopBlackThenFalse() {
-        boolean result = start(
-                new BishopBlack(Cell.F8),
-                new PawnBlack(Cell.E7),
-                Cell.F8, Cell.C5
-        );
-        assertThat(result, is(false));
+    public void whenBishopBlackMoveFromH8ToA1() {
+        BishopBlack bishop = new BishopBlack(Cell.H8);
+        Cell[] actual = bishop.way(bishop.position(), Cell.A1);
+        Cell[] expected = {Cell.G7, Cell.F6, Cell.E5, Cell.D4, Cell.C3, Cell.B2, Cell.A1};
+        assertThat(actual, is(expected));
     }
 
     @Test
-    public void whenPawnBlackNotPreventBishopBlackThenTrue() {
-        boolean result = start(
-                new BishopBlack(Cell.F8),
-                new PawnBlack(Cell.E6),
-                Cell.F8, Cell.C5
-        );
-        assertThat(result, is(true));
+    public void whenBishopBlackMoveFromA8ToH1() {
+        BishopBlack bishop = new BishopBlack(Cell.A8);
+        Cell[] actual = bishop.way(bishop.position(), Cell.H1);
+        Cell[] expected = {Cell.B7, Cell.C6, Cell.D5, Cell.E4, Cell.F3, Cell.G2, Cell.H1};
+        assertThat(actual, is(expected));
     }
 
     @Test
-    public void whenBishopBlackMovingNotThereThenFalse() {
-        boolean result = start(
-                new BishopBlack(Cell.F8),
-                new PawnBlack(Cell.E7),
-                Cell.F8, Cell.F7
-        );
-        assertThat(result, is(false));
+    public void whenBishopBlackMoveFromH1ToA8() {
+        BishopBlack bishop = new BishopBlack(Cell.H1);
+        Cell[] actual = bishop.way(bishop.position(), Cell.A8);
+        Cell[] expected = {Cell.G2, Cell.F3, Cell.E4, Cell.D5, Cell.C6, Cell.B7, Cell.A8};
+        assertThat(actual, is(expected));
     }
 }

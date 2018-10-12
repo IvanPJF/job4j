@@ -27,11 +27,9 @@ public class Logic {
         boolean rst = false;
         Cell[] steps = this.figures[index].way(source, dest);
         for (Figure figure : this.figures) {
-            if (figure != null) {
-                for (Cell step : steps) {
-                    if (figure.position().equals(step)) {
-                        throw new OccupiedWayException("Путь не свободен.");
-                    }
+            for (Cell step : steps) {
+                if (figure.position().equals(step)) {
+                    throw new OccupiedWayException("Путь не свободен.");
                 }
             }
         }

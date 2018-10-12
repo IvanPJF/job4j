@@ -2,11 +2,12 @@ package ru.job4j.chess.firuges.black;
 
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
+import ru.job4j.chess.firuges.ImpossibleMoveException;
 
 /**
  *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
+ * @author IvanPJF (teaching-light@yandex.ru)
+ * @version 11.10.2018
  * @since 0.1
  */
 public class PawnBlack implements Figure {
@@ -22,12 +23,11 @@ public class PawnBlack implements Figure {
     }
 
     @Override
-    public Cell[] way(Cell source, Cell dest) {
-        Cell[] steps = new Cell[0];
-        if (source.y == dest.y + 1 && source.x == dest.x) {
-            steps = new Cell[] {dest};
+    public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
+        if (!(source.y == dest.y + 1 && source.x == dest.x)) {
+            throw new ImpossibleMoveException("Сюда нельзя! (Пешка)");
         }
-        return steps;
+        return new Cell[] {dest};
     }
 
     @Override

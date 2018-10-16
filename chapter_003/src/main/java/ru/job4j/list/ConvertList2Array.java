@@ -1,5 +1,6 @@
 package ru.job4j.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**Конвертация ArrayList в массив.
@@ -24,6 +25,21 @@ public class ConvertList2Array {
             } else if (out != rows) {
                 in = 0;
                 result[++out][in++] = value;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Метод конвертирует список массивов int в список.
+     * @param list список для конвертации в массив.
+     * @return список.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] out : list) {
+            for (int in : out) {
+                result.add(in);
             }
         }
         return result;

@@ -11,20 +11,20 @@ public class SortUser {
 
     /**
      * Сортировка по возрасту.
-     * @param user Несортированный список.
+     * @param users Несортированный список.
      * @return Сортированный список.
      */
-    public Set<User> sort(List<User> user) {
-        return new TreeSet<>(user);
+    public Set<User> sort(List<User> users) {
+        return new TreeSet<>(users);
     }
 
     /**
      * Сортировка по длине имени.
-     * @param user Несортированный список.
+     * @param users Несортированный список.
      * @return Сортированный список.
      */
-    public List<User> sortNameLength(List<User> user) {
-        user.sort(
+    public List<User> sortNameLength(List<User> users) {
+        users.sort(
                 new Comparator<User>() {
                     @Override
                     public int compare(User o1, User o2) {
@@ -33,16 +33,16 @@ public class SortUser {
                         );
                     }
                 });
-        return user;
+        return users;
     }
 
     /**
      * Сортировка по имени и возрасту.
-     * @param user Несортированный список.
+     * @param users Несортированный список.
      * @return Сортированный список.
      */
-    public List<User> sortByAllFields(List<User> user) {
-        user.sort(
+    public List<User> sortByAllFields(List<User> users) {
+        users.sort(
                 new Comparator<User>() {
                     @Override
                     public int compare(User o1, User o2) {
@@ -50,6 +50,6 @@ public class SortUser {
                         return sortName != 0 ? sortName : Integer.compare(o1.getAge(), o2.getAge());
                     }
                 });
-        return user;
+        return users;
     }
 }

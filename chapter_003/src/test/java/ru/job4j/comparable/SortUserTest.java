@@ -42,7 +42,7 @@ public class SortUserTest {
         List<User> expect = new ArrayList<>(Arrays.asList(
                 first, second, third
         ));
-        assertThat(new ArrayList<>(result), is(expect));
+        assertThat(result, is(expect));
     }
 
     /**
@@ -61,6 +61,6 @@ public class SortUserTest {
         List<User> expect = new ArrayList<>(Arrays.asList(
                 first, second, third, fourth
         ));
-        assertThat(new ArrayList<>(result), is(expect));
+        assertThat(result, is(expect));
     }
 }

@@ -42,12 +42,11 @@ public class Bank {
      */
     public void addAccount(String passport, Account account) {
         boolean duplicate = isAddAccount(account);
-        for (User user : this.users.keySet()) {
-            if (user != null && user.getPassport().equals(passport) && !duplicate) {
-                this.users.get(user).add(account);
-                break;
-            }
-        }
+        this.users.keySet().stream().filter(
+                user -> user != null && user.getPassport().equals(passport) && !duplicate
+        ).findFirst().ifPresent(
+                user -> this.users.get(user).add(account)
+        );
     }
 
     /**
@@ -57,12 +56,11 @@ public class Bank {
      */
     public void deleteAccount(String passport, Account account) {
         boolean duplicate = isAddAccount(account);
-        for (User user : this.users.keySet()) {
-            if (user != null && user.getPassport().equals(passport) && duplicate) {
-                this.users.get(user).remove(account);
-                break;
-            }
-        }
+        this.users.keySet().stream().filter(
+                user -> user != null && user.getPassport().equals(passport) && duplicate
+        ).findFirst().ifPresent(
+                user -> this.users.get(user).remove(account)
+        );
     }
 
     /**
@@ -71,14 +69,9 @@ public class Bank {
      * @return Результат проверки.
      */
     private boolean isAddAccount(Account account) {
-        boolean result = false;
-        for (List<Account> element : this.users.values()) {
-            if (element != null && element.contains(account)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
+        return this.users.values().stream().anyMatch(
+                element -> element != null && element.contains(account)
+        );
     }
 
     /**
@@ -87,14 +80,11 @@ public class Bank {
      * @return Список счетов клиента.
      */
     public List<Account> getUserAccounts(String passport) {
-        List<Account> result = null;
-        for (User user : this.users.keySet()) {
-            if (user != null && user.getPassport().equals(passport)) {
-                result = this.users.get(user);
-                break;
-            }
-        }
-        return result;
+        return this.users.keySet().stream().filter(
+                user -> user != null && user.getPassport().equals(passport)
+        ).findFirst().map(
+                user -> this.users.get(user)
+        ).orElse(null);
     }
 
     /**
@@ -104,14 +94,9 @@ public class Bank {
      * @return Найденный счёт(null - если счёт не найден).
      */
     public Account activeAccount(String passport, String requisites) {
-        Account result = null;
-        for (Account element : getUserAccounts(passport)) {
-            if (element != null && element.getRequisites().equals(requisites)) {
-                result = element;
-                break;
-            }
-        }
-        return result;
+        return getUserAccounts(passport).stream().filter(
+                element -> element != null && element.getRequisites().equals(requisites)
+        ).findFirst().orElse(null);
     }
 
     /**

@@ -1,6 +1,7 @@
 package ru.job4j.comparable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**Класс Сортировка списка.
  *@author IvanPJF (teaching-light@yandex.ru)
@@ -24,16 +25,11 @@ public class SortUser {
      * @return Сортированный список.
      */
     public List<User> sortNameLength(List<User> users) {
-        users.sort(
-                new Comparator<User>() {
-                    @Override
-                    public int compare(User o1, User o2) {
-                        return Integer.compare(
-                                o1.getName().length(), o2.getName().length()
-                        );
-                    }
-                });
-        return users;
+        return users.stream().sorted(
+                Comparator.comparingInt(
+                        value -> value.getName().length()
+                )
+        ).collect(Collectors.toList());
     }
 
     /**
@@ -42,14 +38,8 @@ public class SortUser {
      * @return Сортированный список.
      */
     public List<User> sortByAllFields(List<User> users) {
-        users.sort(
-                new Comparator<User>() {
-                    @Override
-                    public int compare(User o1, User o2) {
-                        int sortName = o1.getName().compareTo(o2.getName());
-                        return sortName != 0 ? sortName : Integer.compare(o1.getAge(), o2.getAge());
-                    }
-                });
-        return users;
+        return users.stream().sorted(
+                Comparator.comparing(User::getName).thenComparingInt(User::getAge)
+        ).collect(Collectors.toList());
     }
 }

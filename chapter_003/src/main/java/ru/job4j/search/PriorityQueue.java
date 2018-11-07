@@ -17,13 +17,9 @@ public class PriorityQueue {
      * @param task задача
      */
     public void put(Task task) {
-        int index = 0;
-        for (Task value : this.tasks) {
-            if (!this.tasks.isEmpty() && value.getPriority() > task.getPriority()) {
-                break;
-            }
-            index++;
-        }
+        int index = (int) this.tasks.stream().filter(
+                value -> value.getPriority() < task.getPriority()
+        ).count();
         this.tasks.add(index, task);
     }
 

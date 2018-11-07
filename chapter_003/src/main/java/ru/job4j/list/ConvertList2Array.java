@@ -1,6 +1,7 @@
 package ru.job4j.list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**Конвертация ArrayList в массив.
@@ -18,15 +19,9 @@ public class ConvertList2Array {
     public int[][] toArray(List<Integer> list, int rows) {
         int cells = list.size() % rows == 0 ? list.size() / rows : list.size() / rows + 1;
         int[][] result = new int[rows][cells];
-        int out = 0, in = 0;
-        for (Integer value : list) {
-            if (in != cells) {
-                result[out][in++] = value;
-            } else if (out != rows) {
-                in = 0;
-                result[++out][in++] = value;
-            }
-        }
+        list.forEach(
+                value -> result[list.indexOf(value) / rows][list.indexOf(value) % cells] = value
+        );
         return result;
     }
 
@@ -37,12 +32,7 @@ public class ConvertList2Array {
      */
     public List<Integer> convert(List<int[]> list) {
         List<Integer> result = new ArrayList<>();
-        for (int[] out : list) {
-            for (int in : out) {
-                result.add(in);
-            }
-        }
+        list.stream().flatMapToInt(Arrays::stream).forEach(result::add);
         return result;
     }
-
 }

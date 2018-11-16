@@ -12,19 +12,21 @@ import java.util.stream.IntStream;
  */
 public class EvenIterator implements Iterator {
     private final int[] values;
-    private int index = 0;
+    private int indexEven;
 
     public EvenIterator(final int[] values) {
         this.values = values;
+        this.indexEven = findEven();
     }
 
     /**
      * Проверка наличия в массиве оставшихся чётных чисел.
      * @return Логический результат проверки.
      */
-    public boolean findEven() {
-        return IntStream.range(this.index, this.values.length)
-                .anyMatch(i -> this.values[i] % 2 == 0);
+    public int findEven() {
+        return IntStream.range(this.indexEven, this.values.length)
+                .filter(index -> this.values[index] % 2 == 0)
+                .findFirst().orElse(-1);
     }
 
     /**
@@ -33,7 +35,7 @@ public class EvenIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        return findEven();
+        return this.indexEven != -1;
     }
 
     /**
@@ -43,17 +45,11 @@ public class EvenIterator implements Iterator {
      */
     @Override
     public Object next() throws NoSuchElementException {
-        int result = -1;
-        if (!findEven()) {
+        if (this.indexEven == -1) {
             throw new NoSuchElementException("No element");
         }
-        while (findEven()) {
-            if (this.values[this.index] % 2 == 0) {
-                result = this.values[this.index++];
-                break;
-            }
-            this.index++;
-        }
+        int result = this.values[this.indexEven++];
+        this.indexEven = this.findEven();
         return result;
     }
 }

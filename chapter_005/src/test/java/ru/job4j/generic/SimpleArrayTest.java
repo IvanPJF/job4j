@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -58,6 +59,15 @@ public class SimpleArrayTest {
         simpleArray.add(1);
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void shouldThrowNoSuchElementException() {
+        Iterator<Integer> iterator = simpleArray.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+    }
+
     @Test
     public void whenAddStringElementsInSimpleArrayAndGetThreeElementThenThree() {
         SimpleArray<String> simpleArray = new SimpleArray<>(3);
@@ -79,7 +89,6 @@ public class SimpleArrayTest {
         assertThat(iterator.next(), is("One"));
         assertThat(iterator.next(), is("Two"));
         assertThat(iterator.next(), is("Three"));
-        assertThat(iterator.next(), is((String) null));
         assertThat(iterator.hasNext(), is(false));
     }
 }

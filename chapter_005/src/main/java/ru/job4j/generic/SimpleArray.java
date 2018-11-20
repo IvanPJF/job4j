@@ -95,4 +95,12 @@ public class SimpleArray<T> implements Iterable<T> {
             }
         };
     }
+
+    /**
+     * Количество элементов в массиве.
+     * @return Количество элементов.
+     */
+    public int getSize() {
+        return this.index;
+    }
 }

@@ -13,7 +13,7 @@ public class Converter {
 
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<Integer>() {
-            private Iterator<Integer> iterator = it.next();
+            private Iterator<Integer> iterator;
 
             /**
              * Проверка наличия оставшихся элементов.
@@ -22,11 +22,14 @@ public class Converter {
             @Override
             public boolean hasNext() {
                 boolean result = false;
-                if (this.iterator.hasNext()) {
-                    result = true;
-                } else if (it.hasNext()) {
-                    this.iterator = it.next();
-                    result = this.iterator.hasNext();
+                while (it.hasNext() || this.iterator.hasNext()) {
+                    if (this.iterator == null || !this.iterator.hasNext()) {
+                        this.iterator = it.next();
+                    }
+                    if (this.iterator.hasNext()) {
+                        result = true;
+                        break;
+                    }
                 }
                 return result;
             }
@@ -38,14 +41,10 @@ public class Converter {
             @Override
             public Integer next() {
                 int result;
-                if (this.iterator.hasNext()) {
-                    result = this.iterator.next();
-                } else if (it.hasNext()) {
-                    this.iterator = it.next();
-                    result = this.iterator.next();
-                } else {
+                if (!this.hasNext()) {
                     throw new NoSuchElementException("No element");
                 }
+                result = this.iterator.next();
                 return result;
             }
         };

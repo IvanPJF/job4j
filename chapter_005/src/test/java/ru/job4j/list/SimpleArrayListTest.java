@@ -1,6 +1,5 @@
 package ru.job4j.list;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -8,21 +7,15 @@ import static org.junit.Assert.assertThat;
 
 public class SimpleArrayListTest {
 
-    private SimpleArrayList<String> list;
-
-    @Before
-    public void beforeTest() {
-        list = new SimpleArrayList<>();
-        list.add("One");
-        list.add("Two");
-        list.add("Three");
-    }
-
     /**
      * Взять третий элемент связного списка.
      */
     @Test
     public void whenUseGetTwoThenResultOne() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        list.add("Two");
+        list.add("Three");
         assertThat(list.get(2), is("One"));
     }
 
@@ -31,6 +24,10 @@ public class SimpleArrayListTest {
      */
     @Test
     public void whenUseDeleteZeroThenUseGetZeroResultTwo() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        list.add("Two");
+        list.add("Three");
         list.delete(0);
         assertThat(list.get(0), is("Two"));
     }
@@ -40,6 +37,10 @@ public class SimpleArrayListTest {
      */
     @Test
     public void whenUseDeleteOneThenUseGetOneResultOne() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        list.add("Two");
+        list.add("Three");
         list.delete(1);
         assertThat(list.get(1), is("One"));
     }
@@ -49,12 +50,20 @@ public class SimpleArrayListTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void whenUseDeleteTwoThenUseGetTwoThrowException() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        list.add("Two");
+        list.add("Three");
         list.delete(2);
         list.get(2);
     }
 
     @Test
     public void whenUsegetSizeThenThree() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        list.add("Two");
+        list.add("Three");
         assertThat(list.getSize(), is(3));
     }
 }

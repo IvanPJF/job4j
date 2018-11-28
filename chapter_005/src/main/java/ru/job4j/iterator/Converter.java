@@ -40,12 +40,10 @@ public class Converter {
              */
             @Override
             public Integer next() {
-                int result;
                 if (!this.hasNext()) {
                     throw new NoSuchElementException("No element");
                 }
-                result = this.iterator.next();
-                return result;
+                return this.iterator.next();
             }
         };
     }

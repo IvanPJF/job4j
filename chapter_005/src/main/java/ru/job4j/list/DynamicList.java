@@ -35,14 +35,49 @@ public class DynamicList<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException Неверный индекс.
      */
     public E get(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException("Invalid index");
-        }
+        this.checkElementIndex(index);
         Node<E> result = this.first;
         for (int i = 0; i < index; i++) {
             result = result.next;
         }
         return result.data;
+    }
+
+    /**
+     * Удаление элемента по индексу.
+     * @param index Индекс элемента.
+     * @return Удаленный элемент.
+     * @throws IndexOutOfBoundsException Неверный индекс.
+     */
+    public E delete(int index) throws IndexOutOfBoundsException {
+        this.checkElementIndex(index);
+        Node<E> result = this.first;
+        if (index == 0) {
+            this.first = this.first.next;
+            result.next = null;
+        } else {
+            Node<E> leftElem = this.first;
+            for (int i = 0; i < index; i++) {
+                leftElem = result;
+                result = result.next;
+            }
+            leftElem.next = result.next;
+            result.next = null;
+        }
+        this.size--;
+        this.modCount++;
+        return result.data;
+    }
+
+    /**
+     * Проверка наличия индекса.
+     * @param index Индекс.
+     * @throws IndexOutOfBoundsException Неверный индекс.
+     */
+    private void checkElementIndex(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
     }
 
     /**

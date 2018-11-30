@@ -64,6 +64,14 @@ public class DynamicArray<E> implements Iterable<E> {
     }
 
     /**
+     * Количество элементов в динамическом массиве.
+     * @return Количество элементов.
+     */
+    public int getSize() {
+        return this.size;
+    }
+
+    /**
      * Итератор массива.
      * @return Итератор.
      * @throws NoSuchElementException Отсутствии элемента.

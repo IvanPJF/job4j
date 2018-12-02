@@ -47,4 +47,16 @@ public class SimpleQueueTest {
         SimpleQueue<Integer> simpleQueue = new SimpleQueue<>();
         assertThat(simpleQueue.poll(), is((Integer) null));
     }
+
+    @Test
+    public void whenUseTwoTimesPushAndPollAndOneTimesPushAndPoll() {
+        SimpleQueue<Integer> simpleQueue = new SimpleQueue<>();
+        simpleQueue.push(1);
+        simpleQueue.push(2);
+        Integer resultFirst = simpleQueue.poll();
+        simpleQueue.push(3);
+        Integer resultSecond = simpleQueue.poll();
+        assertThat(resultFirst, is(1));
+        assertThat(resultSecond, is(2));
+    }
 }

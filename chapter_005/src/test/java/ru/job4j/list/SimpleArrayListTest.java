@@ -23,41 +23,45 @@ public class SimpleArrayListTest {
      * Удалить первый элемент связного списка.
      */
     @Test
-    public void whenUseDeleteZeroThenUseGetZeroResultTwo() {
+    public void whenUseDeleteThenUseGetZeroResultTwo() {
         SimpleArrayList<String> list = new SimpleArrayList<>();
         list.add("One");
         list.add("Two");
         list.add("Three");
-        list.delete(0);
+        list.delete();
         assertThat(list.get(0), is("Two"));
     }
 
     /**
-     * Удалить второй элемент связного списка.
+     * Удалить первый и второй элементы связного списка.
      */
     @Test
-    public void whenUseDeleteOneThenUseGetOneResultOne() {
+    public void whenUseDeleteTwoTimesThenUseGetZeroResultOne() {
         SimpleArrayList<String> list = new SimpleArrayList<>();
         list.add("One");
         list.add("Two");
         list.add("Three");
-        list.delete(1);
-        assertThat(list.get(1), is("One"));
+        list.delete();
+        list.delete();
+        assertThat(list.get(0), is("One"));
     }
 
     /**
-     * Удалить последний элемент связного списка.
+     * Удалить первый элемент связного списка и попытаться взять элемент по несуществующему индексу.
      */
     @Test(expected = IndexOutOfBoundsException.class)
-    public void whenUseDeleteTwoThenUseGetTwoThrowException() {
+    public void whenUseDeleteThenUseGetTwoThrowException() {
         SimpleArrayList<String> list = new SimpleArrayList<>();
         list.add("One");
         list.add("Two");
         list.add("Three");
-        list.delete(2);
+        list.delete();
         list.get(2);
     }
 
+    /**
+     * Узнать размер связанного списка.
+     */
     @Test
     public void whenUsegetSizeThenThree() {
         SimpleArrayList<String> list = new SimpleArrayList<>();
@@ -65,5 +69,31 @@ public class SimpleArrayListTest {
         list.add("Two");
         list.add("Three");
         assertThat(list.getSize(), is(3));
+    }
+
+    /**
+     * Размер связанного списка после использования метода delete().
+     */
+    @Test
+    public void whenUsegetSize() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        list.add("One");
+        int sizeFirst = list.getSize();
+        list.delete();
+        int sizeSecond = list.getSize();
+        list.delete();
+        int sizeThird = list.getSize();
+        assertThat(sizeFirst, is(1));
+        assertThat(sizeSecond, is(0));
+        assertThat(sizeThird, is(0));
+    }
+
+    /**
+     * Использование метода delete() на пустом списке.
+     */
+    @Test
+    public void whenUseDeleteForZeroSizeListThenResultNull() {
+        SimpleArrayList<String> list = new SimpleArrayList<>();
+        assertThat(list.delete(), is((String) null));
     }
 }

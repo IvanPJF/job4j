@@ -23,28 +23,17 @@ public class SimpleArrayList<E> {
     }
 
     /**
-     * Удаление элемента по индексу.
-     * @param index Индекс элемента.
+     * Удаление первого элемента связанного списка.
      * @return Удаленный элемент.
-     * @throws IndexOutOfBoundsException Неверный индекс.
      */
-    public E delete(int index) throws IndexOutOfBoundsException {
-        this.checkElementIndex(index);
+    public E delete() {
         Node<E> result = this.first;
-        if (index == 0) {
+        if (this.first != null) {
             this.first = this.first.next;
             result.next = null;
-        } else {
-            Node<E> leftElem = this.first;
-            for (int i = 0; i < index; i++) {
-                leftElem = result;
-                result = result.next;
-            }
-            leftElem.next = result.next;
-            result.next = null;
+            this.size--;
         }
-        this.size--;
-        return result.data;
+        return result != null ? result.data : null;
     }
 
     /**

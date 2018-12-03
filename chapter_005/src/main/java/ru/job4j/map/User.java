@@ -22,8 +22,19 @@ public class User {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(name, children, birthday);
+    public boolean equals(Object o) {
+        boolean result = true;
+        if (this != o) {
+            if (o == null || getClass() != o.getClass()) {
+                result = false;
+            } else {
+                User user = (User) o;
+                result = children == user.children
+                        && Objects.equals(name, user.name)
+                        && Objects.equals(birthday, user.birthday);
+            }
+        }
+        return result;
     }
 
     public String getName() {

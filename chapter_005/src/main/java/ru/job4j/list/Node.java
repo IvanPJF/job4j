@@ -10,7 +10,6 @@ class Node<T> {
 
     T value;
     Node<T> next;
-    boolean isRepeat;
 
     Node(T value) {
         this.value = value;

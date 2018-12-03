@@ -15,13 +15,17 @@ public class CycleNode {
      */
     public boolean hasCycle(Node first) {
         boolean result = false;
-        while (first.next != null) {
-            if (first.isRepeat) {
-                result = true;
-                break;
+        if (first != null) {
+            Node turtle = first;
+            Node hare = first;
+            while (hare.next != null && hare.next.next != null) {
+                turtle = turtle.next;
+                hare = hare.next.next;
+                if (turtle == hare) {
+                    result = true;
+                    break;
+                }
             }
-            first.isRepeat = true;
-            first = first.next;
         }
         return result;
     }

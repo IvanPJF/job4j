@@ -55,4 +55,13 @@ public class UserTest {
         User second = null;
         assertThat(first.equals(second), is(false));
     }
+
+    @Test
+    public void whenTwoUsersHasOneLinksThenTrue() {
+        Calendar birthday = new GregorianCalendar(2000, 1, 1);
+        User first = new User("Ivan", 1, birthday);
+        User second = first;
+        assertThat(first.equals(second), is(true));
+        assertThat(second.equals(first), is(true));
+    }
 }

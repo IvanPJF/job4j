@@ -125,4 +125,26 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             }
         };
     }
+
+    /**
+     * Проверка дерева на бинарность.
+     * @return Логический результат проверки.
+     */
+    public boolean isBinary() {
+        final int binaryNum = 2;
+        boolean result = true;
+        Queue<Node<E>> list = new LinkedList<>();
+        list.offer(root);
+        while (!list.isEmpty()) {
+            List<Node<E>> children = list.poll().leaves();
+            if (children.size() > binaryNum) {
+                result = false;
+                break;
+            }
+            for (Node<E> child : children) {
+                list.offer(child);
+            }
+        }
+        return result;
+    }
 }

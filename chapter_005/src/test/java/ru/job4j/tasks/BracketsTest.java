@@ -20,7 +20,7 @@ public class BracketsTest {
     @Test
     public void whenBracketsIsValidThenTrue() {
         Brackets brackets = new Brackets();
-        boolean result = brackets.bracketsValid("{[(){}]}");
+        boolean result = brackets.bracketsValid("s{[(){}]}f");
         assertThat(result, is(true));
     }
 
@@ -52,7 +52,7 @@ public class BracketsTest {
     @Test
     public void whenBracketsIsInvalidAndResidueBracketInRightThenFalse() {
         Brackets brackets = new Brackets();
-        boolean result = brackets.bracketsValid("[{}])");
+        boolean result = brackets.bracketsValid("[{}]f");
         assertThat(result, is(false));
     }
 }

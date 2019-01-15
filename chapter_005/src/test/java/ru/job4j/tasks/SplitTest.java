@@ -2,6 +2,8 @@ package ru.job4j.tasks;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,15 +22,18 @@ public class SplitTest {
         return result;
     }
 
+    /**
+     * Массив преобразуется в два массива с приблизительно одинаковой суммой элементов.
+     * Результирующие массивы содержаться в списке массивов.
+     */
     @Test
     public void whenArrayToMap() {
         Split split = new Split();
         int[] input = {2, 4, 9, 5, 9, 2, 7, 8};
-        int[] outOne = {9, 8, 4, 2};
-        int[] outTwo = {9, 7, 5, 2};
+        int expected = sumElements(input) / 2;
         split.splitArray(input);
-        assertThat(sumElements(outOne), is(sumElements(outTwo)));
-        assertThat(outOne, is(split.getArrOne()));
-        assertThat(outTwo, is(split.getArrTwo()));
+        List<int[]> result = split.splitArray(input);
+        assertThat(expected, is(sumElements(result.get(0))));
+        assertThat(expected, is(sumElements(result.get(1))));
     }
 }

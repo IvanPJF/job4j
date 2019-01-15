@@ -11,82 +11,29 @@ import java.util.*;
  *@version 0.1
  */
 public class Split {
-
-    private int[] arrOne;
-    private int[] arrTwo;
-    private int sumOne;
-    private int sumTwo;
-
+    static final int OUT_SIZE = 2;
     /**
-     * Деление массива на 2 новых массива.
+     * Деление массива на два массива с приблизительно одинаковой суммой элементов.
      * @param array Входной массив.
+     * @return Список массивов с приблизительно одинаковой суммой элементов.
      */
-    public void splitArray(int[] array) {
-        NavigableMap<Integer, Integer> map = this.arrayToMap(array);
-        List<Integer> listOne = new LinkedList<>();
-        List<Integer> listTwo = new LinkedList<>();
-        while (!map.isEmpty()) {
-            Integer value = this.takeElement(map);
-            if (this.sumOne <= this.sumTwo) {
-                listOne.add(value);
-                this.sumOne += value;
+    public List<int[]> splitArray(int[] array) {
+        int sumOne = 0, sumTwo = 0;
+        List<Integer> oneList = new LinkedList<>();
+        List<Integer> twoList = new LinkedList<>();
+        List<int[]> result = new ArrayList<>(OUT_SIZE);
+        Arrays.sort(array);
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (sumOne <= sumTwo) {
+                oneList.add(array[i]);
+                sumOne += array[i];
             } else {
-                listTwo.add(value);
-                this.sumTwo += value;
+                twoList.add(array[i]);
+                sumTwo += array[i];
             }
         }
-        this.arrOne = this.listToArray(listOne);
-        this.arrTwo = this.listToArray(listTwo);
-    }
-
-    /**
-     * Конвертация массива в Map.
-     * @param array Входной массив.
-     * @return Map, содержащая эл-ты массива.
-     */
-    private NavigableMap<Integer, Integer> arrayToMap(int[] array) {
-        NavigableMap<Integer, Integer> map = new TreeMap<>();
-        for (int value : array) {
-            Integer count = map.get(value);
-            map.put(value, count == null ? 1 : ++count);
-        }
-        return map;
-    }
-
-    /**
-     * Конвертация списка в массив.
-     * @param list Входной список.
-     * @return Массив, содержащий эл-ты списка.
-     */
-    private int[] listToArray(List<Integer> list) {
-        int[] result = new int[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i);
-        }
+        result.add(oneList.stream().mapToInt(Integer::intValue).toArray());
+        result.add(twoList.stream().mapToInt(Integer::intValue).toArray());
         return result;
-    }
-
-    /**
-     * Взять самый большой ключ из Map.
-     * @param map Входной Map.
-     * @return Самый большой ключ в Map.
-     */
-    private Integer takeElement(NavigableMap<Integer, Integer> map) {
-        Integer value = map.lastKey();
-        Integer count = map.get(value);
-        if (count > 1) {
-            map.replace(value, --count);
-        } else {
-            map.remove(value);
-        }
-        return value;
-    }
-
-    public int[] getArrOne() {
-        return this.arrOne;
-    }
-
-    public int[] getArrTwo() {
-        return this.arrTwo;
     }
 }

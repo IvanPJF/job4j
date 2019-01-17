@@ -21,13 +21,14 @@ public class User {
             result = false;
         } else {
             User user = (User) o;
-            result = id == user.id;
+            result = id == user.id
+                    && name.equals(user.name);
         }
         return result;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
 }

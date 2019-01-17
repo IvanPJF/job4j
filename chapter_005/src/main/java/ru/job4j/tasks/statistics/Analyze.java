@@ -1,6 +1,8 @@
 package ru.job4j.tasks.statistics;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Статистика по коллекции.
@@ -19,11 +21,15 @@ public class Analyze {
      */
     public Info diff(List<User> previous, List<User> current) {
         Info info = new Info();
+        Map<Integer, User> currMap = new HashMap<>();
+        for (User curr : current) {
+            currMap.put(curr.id, curr);
+        }
         for (User prevUser : previous) {
-            int index = current.indexOf(prevUser);
-            if (index != -1 && !current.get(index).name.equals(prevUser.name)) {
+            boolean idEq = currMap.containsKey(prevUser.id);
+            if (idEq && !currMap.get(prevUser.id).equals(prevUser)) {
                 info.changed++;
-            } else if (index == -1) {
+            } else if (!idEq) {
                 info.deleted++;
             }
         }

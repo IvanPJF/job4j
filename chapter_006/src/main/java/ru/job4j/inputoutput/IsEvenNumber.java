@@ -18,10 +18,10 @@ public class IsEvenNumber {
      */
     public boolean isNumber(InputStream in) {
         boolean result = true;
-        int readChar;
-        char currentChar;
         StringBuilder number = new StringBuilder();
         try (InputStream is = in) {
+            int readChar = -1;
+            char currentChar = 0;
             while ((readChar = is.read()) != -1) {
                 currentChar = (char) readChar;
                 if (currentChar < '0' || currentChar > '9') {

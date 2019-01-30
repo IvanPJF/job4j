@@ -20,10 +20,10 @@ public class WordFilter {
      * @param abuse Массив запрещённых слов.
      */
     public void dropAbuses(Reader in, Writer out, String[] abuse) {
-        String currentRead;
         Set<String> abuseSet = new HashSet<>(Arrays.asList(abuse));
         try (BufferedReader reader = new BufferedReader(in);
              BufferedWriter writer = new BufferedWriter(out)) {
+            String currentRead = null;
             while ((currentRead = reader.readLine()) != null) {
                 for (String value : currentRead.split(" ")) {
                     if (!abuseSet.contains(value)) {

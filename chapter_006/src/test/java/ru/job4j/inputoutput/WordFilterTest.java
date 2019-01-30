@@ -43,8 +43,8 @@ public class WordFilterTest {
     @Test(expected = IOException.class)
     public void whenFileNotFoundThenException() throws IOException {
         new WordFilter().dropAbuses(
-                new FileReader("ccc:\\File.txt"),
-                new FileWriter("ccc:\\File1.txt"),
+                new FileReader("File.txt"),
+                new FileWriter("File1.txt"),
                 new String[]{});
     }
 }

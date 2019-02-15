@@ -17,45 +17,49 @@ public class ConsoleChat {
     private static final String STOP = "stop";
     private static final String CONTINUE = "continue";
     private static final String EXIT = "exit";
-    private static final List<String> LIST_COMMANDS = new ArrayList<>(Arrays.asList(STOP, CONTINUE, EXIT));
-    private String pathAnswer;
+    private static final List<String> LIST_COMMANDS = Arrays.asList(STOP, CONTINUE, EXIT);
+    private List<String> listAnswer;
     private String pathLog;
 
     public ConsoleChat(String[] args) {
-        this.pathAnswer = args[0];
+        this.listAnswer = this.fileToArray(args[0]);
         this.pathLog = args[1];
     }
 
     public static void main(String[] args) {
         ConsoleChat consoleChat = new ConsoleChat(args);
-        File answerFile = new File(consoleChat.pathAnswer);
+        Scanner scanner = new Scanner(System.in);
+        List<String> answerList = consoleChat.listAnswer;
         File logFile = new File(consoleChat.pathLog);
-        consoleChat.chat(answerFile, logFile);
+        consoleChat.chat(scanner, answerList, logFile);
     }
 
     /**
-     * Implements communication in the console.
-     * @param answerFile File with ready-made answers.
-     * @param logFile File to record a conversation.
+     * Implementation of communication.
+     * @param scanner Questions.
+     * @param answerList Answers.
+     * @param logFile File to save the text of correspondence.
      */
-    private void chat(File answerFile, File logFile) {
+    public void chat(Scanner scanner, List<String> answerList, File logFile) {
         System.out.println("List of commands: " + LIST_COMMANDS);
-        Scanner scanner = new Scanner(System.in);
+        if (logFile.exists()) {
+            logFile.delete();
+        }
         String myMessage = null;
         boolean stop = false;
         do {
             StringBuilder textLog = new StringBuilder();
             myMessage = scanner.nextLine();
-            textLog.append("My message: ").append(myMessage);
+            textLog.append(myMessage);
             if (!myMessage.equals(EXIT)) {
                 if (!stop && myMessage.equals(STOP)) {
                     stop = true;
                 } else if (stop && myMessage.equals(CONTINUE)) {
                     stop = false;
                 } else if (!stop) {
-                    String answer = answerComp(answerFile);
+                    String answer = answerComp(answerList);
                     System.out.println(answer);
-                    textLog.append(System.lineSeparator()).append("Computer message: ").append(answer);
+                    textLog.append(System.lineSeparator()).append(answer);
                 }
             }
             recordLog(logFile, textLog.toString());
@@ -63,43 +67,30 @@ public class ConsoleChat {
     }
 
     /**
-     * Select a random response from a special file.
-     * @param file A file with a list of answers.
-     * @return Random response from file.
+     * A random string from the collection.
+     * @param list Collection with strings.
+     * @return Random string.
      */
-    private String answerComp(File file) {
-        String result = null;
-        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-            String firstLine = raf.readLine();
-            long size = raf.length();
-            long rnd = (long) (Math.random() * size);
-            if (firstLine != null && rnd <= firstLine.length()) {
-                result = firstLine;
-            } else if (firstLine != null) {
-                result = randomLine(raf, rnd);
-            } else {
-                result = "The answer file is empty.";
-            }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        return result;
+    private String answerComp(List<String> list) {
+        int size = list.size();
+        int rnd = (int) (Math.random() * size);
+        return size > 0 ? list.get(rnd) : "The answer file is empty.";
     }
 
     /**
-     * Select a random string from a file.
-     * @param raf Open file with a list of answers.
-     * @param position The position at which the string search begins.
-     * @return Random string.
-     * @throws IOException IOException.
+     * Adds lines of a text file to the collection.
+     * @param pathAnswer Path to the answer file.
+     * @return Collection of answers.
      */
-    private String randomLine(RandomAccessFile raf, long position) throws IOException {
-        raf.seek(position);
-        raf.readLine();
-        String result = raf.readLine();
-        if (result == null) {
-            raf.seek(0);
-            result = raf.readLine();
+    private List<String> fileToArray(String pathAnswer) {
+        List<String> result = new ArrayList<>();
+        try (BufferedReader bufRead = new BufferedReader(new FileReader(pathAnswer))) {
+            String line = null;
+            while ((line = bufRead.readLine()) != null) {
+                result.add(line);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
         return result;
     }

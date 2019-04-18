@@ -1,6 +1,5 @@
 package ru.job4j.find;
 
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.*;
@@ -21,69 +20,108 @@ import static org.junit.Assert.assertTrue;
 public class FindTest {
 
     /**
-     * Create a temporary root directory with directories and files attached to it.
-     * Created by filtering files by extension.
+     * Search files by mask.
      * @throws IOException
      */
     @Test
-    public void whenFilterFiles() throws IOException {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        File root = new File(tmpDir, "RootDirectory");
-        File oneDir = new File(root.getPath(), "OneDir");
-        File twoDir = new File(root.getPath(), "TwoDir");
-        File twoOneDir = new File(twoDir.getPath(), "TwoOneDir");
-        File rootFile = new File(root, "RootFile.txt");
-        File oneDirFile = new File(oneDir, "OneDirFile.txt");
-        File twoDirFile = new File(twoDir, "TwoDirFile.html");
-        File twoOneDirFile = new File(twoOneDir, "TwoOneFile.txt");
-        root.mkdir();
-        oneDir.mkdir();
-        twoDir.mkdir();
-        twoOneDir.mkdir();
-        rootFile.createNewFile();
-        oneDirFile.createNewFile();
-        twoDirFile.createNewFile();
-        twoOneDirFile.createNewFile();
-        String pathDir = root.getAbsolutePath();
-        String logFile = pathDir + System.getProperty("file.separator") + "log.txt";
+    public void whenSearchFilesByMask() throws IOException {
+        File root = this.createFileDir(false, new File(System.getProperty("java.io.tmpdir")), "RootDirectory");
+        File oneDir = this.createFileDir(false, root, "OneDir");
+        File twoDir = this.createFileDir(false, root, "TwoDir");
+        File twoOneDir = this.createFileDir(false, twoDir, "TwoOneDir");
+        File rootFile = this.createFileDir(true, root, "RootFile.txt");
+        File oneDirFile = this.createFileDir(true, oneDir, "OneDirFile.txt");
+        File twoDirFile = this.createFileDir(true, twoDir, "TwoDirFile.html");
+        File twoOneDirFile = this.createFileDir(true, twoOneDir, "TwoOneFile.txt");
+        File logFile = new File(root, "log.txt");
         String[] args =
                 {
-                        "-d", pathDir, "-n", "*.txt", "-m", "-o", logFile
+                        "-d", root.getAbsolutePath(), "-n", "*.txt", "-m", "-o", logFile.getAbsolutePath()
                 };
         new Find(args).run();
-        List<String> list = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(logFile));
-        String line = null;
-        while ((line = br.readLine()) != null) {
-            list.add(line);
-        }
-        br.close();
-        String[] result = list.toArray(new String[0]);
+        String[] result = this.resultArgs(logFile);
         String[] expected = {rootFile.getAbsolutePath(), oneDirFile.getAbsolutePath(), twoOneDirFile.getAbsolutePath()};
-        assertTrue(new File(logFile).exists());
+        assertTrue(logFile.exists());
         assertThat(result, arrayContainingInAnyOrder(expected));
+        this.deleteTempFile(root);
     }
 
     /**
-     * Delete the temporary directory.
+     * Search for files by full name.
+     * @throws IOException
      */
-    @After
-    public void delete() {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        File root = new File(tmpDir, "RootDirectory");
-        deleteFile(root);
+    @Test
+    public void whenSearchFilesByFullName() throws IOException {
+        File root = this.createFileDir(false, new File(System.getProperty("java.io.tmpdir")), "RootDirectory");
+        File oneDir = this.createFileDir(false, root, "OneDir");
+        File twoDir = this.createFileDir(false, root, "TwoDir");
+        File twoOneDir = this.createFileDir(false, twoDir, "TwoOneDir");
+        File rootFile = this.createFileDir(true, root, "File.txt");
+        File oneDirFile = this.createFileDir(true, oneDir, "File.txt");
+        File twoDirFile = this.createFileDir(true, twoDir, "TwoDirFile.html");
+        File twoOneDirFile = this.createFileDir(true, twoOneDir, "File.doc");
+        File logFile = new File(root, "log.txt");
+        String[] args =
+                {
+                        "-d", root.getAbsolutePath(), "-n", "File.txt", "-f", "-o", logFile.getAbsolutePath()
+                };
+        new Find(args).run();
+        String[] result = this.resultArgs(logFile);
+        String[] expected = {rootFile.getAbsolutePath(), oneDirFile.getAbsolutePath()};
+        assertTrue(logFile.exists());
+        assertThat(result, arrayContainingInAnyOrder(expected));
+        this.deleteTempFile(root);
+    }
+
+    /**
+     * Create a file/directory.
+     * @param isFile True - create the file, false - create directory.
+     * @param parent Parent directory.
+     * @param name The name of the new directory/file.
+     * @return Link to the created file/directory.
+     * @throws IOException
+     */
+    public File createFileDir(boolean isFile, File parent, String name) throws IOException {
+        File elem = new File(parent, name);
+        if (isFile) {
+            if (!elem.createNewFile()) {
+                throw new IllegalStateException(String.format("File could not created %s", elem.getAbsoluteFile()));
+            }
+        } else {
+            if (!elem.mkdir()) {
+                throw new IllegalStateException(String.format("Directory could not created %s", elem.getAbsoluteFile()));
+            }
+        }
+        return elem;
+    }
+
+    /**
+     * Translates the contents of the log-file into an array.
+     * @param logFile Target log-file.
+     * @return Resulting array.
+     * @throws IOException
+     */
+    public String[] resultArgs(File logFile) throws IOException {
+        List<String> list = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(logFile))) {
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                list.add(line);
+            }
+        }
+        return list.toArray(new String[0]);
     }
 
     /**
      * Recursive deletion of files and directories starting from the specified root directory.
-     * @param file Root directory.
+     * @param root Root directory.
      */
-    public void deleteFile(File file) {
-        if (file.isDirectory()) {
-            for (File value : file.listFiles()) {
-                deleteFile(value);
+    public void deleteTempFile(File root) {
+        if (root.isDirectory()) {
+            for (File value : root.listFiles()) {
+                deleteTempFile(value);
             }
         }
-        file.delete();
+        root.delete();
     }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.cli.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class Find {
     private String root;
     private String name;
     private String out;
-    private boolean mask = false;
-    private boolean full = false;
+    private boolean mask;
+    private boolean full;
 
     public Find(String[] args) {
         this.options = this.createOptions();
@@ -55,7 +56,7 @@ public class Find {
             CommandLine commandLine = parser.parse(this.options, args);
             this.assignValues(commandLine);
         } catch (ParseException e) {
-            System.out.println(this.info());
+            e.getMessage();
         }
     }
 
@@ -135,20 +136,29 @@ public class Find {
                 + "(replace -m(mask) with -f(full) if you search for the full name)";
     }
 
+    private boolean isValidFields() {
+        return this.root != null
+                && this.name != null
+                && this.out != null
+                && (this.mask || this.full);
+    }
+
     /**
      * Write the paths of the found files to the log file.
      */
     public void run() {
-        List<File> list = this.find(this.allFiles(this.root), this.name);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(this.out)))) {
-            for (File file : list) {
-                bw.write(file.getAbsolutePath());
-                bw.newLine();
+        if (this.isValidFields()) {
+            List<File> list = this.find(this.allFiles(this.root), this.name);
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(this.out)))) {
+                for (File file : list) {
+                    bw.write(file.getAbsolutePath());
+                    bw.newLine();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (NullPointerException e) {
+        } else {
             System.out.println(this.info());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -2,37 +2,52 @@ package ru.job4j.tracker;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class TrackerSQLTest {
 
-    @Test
-    public void checkConnection() {
-        try (TrackerSQL sql = new TrackerSQL()) {
-            assertThat(sql.init(), is(true));
+    public Connection init() throws Exception {
+        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            return DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+            );
         }
     }
 
     @Test
-    public void whenAddItemToTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void checkConnection() throws Exception {
+        try (TrackerSQL sql = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+            assertThat(sql.isConnect(), is(true));
+        }
+    }
+
+    @Test
+    public void whenAddItemToTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item item = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             Item result = tracker.findById(item.getId());
             assertThat(result, is(item));
-            tracker.delete(result.getId());
         }
     }
 
     @Test
-    public void whenReplaceItemToTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void whenReplaceItemToTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item itemAdd = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             Item itemReplace = new Item("Sam", "SamDesc", System.currentTimeMillis());
             tracker.replace(itemAdd.getId(), itemReplace);
@@ -41,14 +56,12 @@ public class TrackerSQLTest {
             assertThat(result.getName(), is(itemReplace.getName()));
             assertThat(result.getDescription(), is(itemReplace.getDescription()));
             assertThat(result.getCreate(), is(itemReplace.getCreate()));
-            tracker.delete(result.getId());
         }
     }
 
     @Test
-    public void whenDeleteItemFromTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void whenDeleteItemFromTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item itemAdd = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             tracker.delete(itemAdd.getId());
             Item result = tracker.findById(itemAdd.getId());
@@ -57,45 +70,35 @@ public class TrackerSQLTest {
     }
 
     @Test
-    public void whenFindAllToTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void whenFindAllToTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item itemOne = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             Item itemTwo = tracker.add(new Item("Sam", "SamDesc", System.currentTimeMillis()));
             List<Item> expected = new LinkedList<>(Arrays.asList(itemOne, itemTwo));
             List<Item> result = tracker.findAll();
             assertThat(result, is(expected));
-            tracker.delete(itemOne.getId());
-            tracker.delete(itemTwo.getId());
         }
     }
 
     @Test
-    public void whenFindByNameToTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void whenFindByNameToTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item itemOne = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             Item itemTwo = tracker.add(new Item("Sam", "SamDesc", System.currentTimeMillis()));
             Item itemThree = tracker.add(new Item("Sam", "SamTwoDesc", System.currentTimeMillis()));
             List<Item> expected = new LinkedList<>(Arrays.asList(itemTwo, itemThree));
             List<Item> result = tracker.findByName("Sam");
             assertThat(result, is(expected));
-            tracker.delete(itemOne.getId());
-            tracker.delete(itemTwo.getId());
-            tracker.delete(itemThree.getId());
         }
     }
 
     @Test
-    public void whenFindByIdToTracker() {
-        try (TrackerSQL tracker = new TrackerSQL()) {
-            tracker.init();
+    public void whenFindByIdToTracker() throws Exception {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item itemOne = tracker.add(new Item("Ivan", "IvanDesc", System.currentTimeMillis()));
             Item itemTwo = tracker.add(new Item("Sam", "SamDesc", System.currentTimeMillis()));
             Item result = tracker.findById(itemTwo.getId());
             assertThat(result, is(itemTwo));
-            tracker.delete(itemOne.getId());
-            tracker.delete(itemTwo.getId());
         }
     }
 }

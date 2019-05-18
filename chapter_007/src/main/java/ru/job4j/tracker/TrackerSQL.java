@@ -16,6 +16,19 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     private Connection connection;
 
+    public TrackerSQL(Connection connection) {
+        this.connection = connection;
+        this.tableValid();
+    }
+
+    public TrackerSQL() {
+        this.init();
+    }
+
+    public boolean isConnect() {
+        return this.connection != null;
+    }
+
     /**
      * Initializing the database.
      * @return true - if you can connect, else - false.

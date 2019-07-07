@@ -44,9 +44,9 @@ public class ConvertXSQTTest {
         String expected = new StringJoiner(System.lineSeparator())
                 .add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                 .add("<entries>")
-                .add("<entry href=\"1\"/>")
-                .add("<entry href=\"2\"/>")
-                .add("<entry href=\"3\"/>")
+                .add("    <entry href=\"1\"/>")
+                .add("    <entry href=\"2\"/>")
+                .add("    <entry href=\"3\"/>")
                 .add("</entries>")
                 .toString();
         fileXML.deleteOnExit();

@@ -1,5 +1,6 @@
 package ru.job4j.calculate;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -18,7 +19,7 @@ public class Parser {
     private boolean isNotOperator;
     private static final String RESULT_WORD = "r";
     private static final String DIGIT_PATTERN = "(?:[-]?)(?:[\\d]+|[\\d]+[.,]?[\\d]+)";
-    private static final String OPERATORS_PATTERN = "[+\\-*/]";
+    private static String operatorsPattern = "[+\\-*/]";
 
     /**
      * Parses the input expression.
@@ -42,12 +43,17 @@ public class Parser {
                     this.isNullOperator();
                     this.isNotSecond = true;
                 }
-            } else if (Pattern.matches(OPERATORS_PATTERN, value) && this.operator == null) {
+            } else if (Pattern.matches(operatorsPattern, value) && this.operator == null) {
                 this.operator = value;
             }
             if (this.first != null && this.second != null && this.operator != null) {
                 break;
             }
+        }
+        if (this.first != null && this.second == null) {
+            this.second = this.first;
+        } else if (this.second != null && this.first == null) {
+            this.first = this.second;
         }
     }
 
@@ -99,5 +105,16 @@ public class Parser {
 
     public String resultWord() {
         return RESULT_WORD;
+    }
+
+    public void addToOperators(Set<String> operators) {
+        StringBuilder builder = new StringBuilder();
+        for (String value : operators) {
+            for (String elem : value.split("")) {
+                builder.append(String.format("[%s]", elem));
+            }
+            builder.append("|");
+        }
+        operatorsPattern = String.format("%s|%s", operatorsPattern, builder.toString());
     }
 }

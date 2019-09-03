@@ -11,13 +11,15 @@ import java.util.Scanner;
  */
 public class InteractCalc {
 
-    private Parser parser = new Parser();
+    private Parser parser;
     private StorageOperators storageOperators;
     private String lastOperation;
     private Double result;
 
-    public InteractCalc(final Calculator calculator) {
-        this.storageOperators = new StorageOperators(calculator);
+    public InteractCalc(final StorageOperators storageOperators) {
+        this.storageOperators = storageOperators;
+        this.parser = new Parser();
+        this.parser.addToOperators(this.storageOperators.allOperators());
     }
 
     /**
@@ -59,28 +61,24 @@ public class InteractCalc {
      * @param is Source expressions.
      */
     public void run(InputStream is) {
-        Scanner sc = new Scanner(is);
-        String wordHint = "h";
-        String wordResult = this.parser.resultWord();
-        String wordExit = "q";
-        Menu menu = new Menu(wordHint, wordResult, wordExit);
-        String expresion = null;
-        do {
-            menu.showMenu(this.result, this.lastOperation);
-            expresion = sc.nextLine();
-            if (wordHint.equals(expresion)) {
-                menu.showHint();
-                sc.nextLine();
-            } else {
-                if (!wordExit.equals(expresion)) {
-                    menu.showResult(this.calculate(expresion));
+        try (Scanner sc = new Scanner(is)) {
+            String wordHint = "h";
+            String wordResult = this.parser.resultWord();
+            String wordExit = "q";
+            Menu menu = new Menu(wordHint, wordResult, wordExit);
+            String expresion = null;
+            do {
+                menu.showMenu(this.result, this.lastOperation);
+                expresion = sc.nextLine();
+                if (wordHint.equals(expresion)) {
+                    menu.showHint();
+                    sc.nextLine();
+                } else {
+                    if (!wordExit.equals(expresion)) {
+                        menu.showResult(this.calculate(expresion));
+                    }
                 }
-            }
-        } while (!wordExit.equals(expresion));
-    }
-
-    public static void main(String[] args) {
-        InteractCalc iCalc = new InteractCalc(new Calculator());
-        iCalc.run(System.in);
+            } while (!wordExit.equals(expresion));
+        }
     }
 }

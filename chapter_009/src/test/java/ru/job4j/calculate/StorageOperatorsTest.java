@@ -9,33 +9,45 @@ public class StorageOperatorsTest {
 
     @Test
     public void whenUseGetOperationAndExecuteAdd() {
-        StorageOperators so = new StorageOperators(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        IOperation add = new StorageOperators.AddOperation(calc, "+");
+        storage.addOperator(add);
         Double expected = 10.0;
-        Double result = so.getOperation("+").execute(8.0, 2.0);
+        Double result = storage.getOperation("+").execute(8.0, 2.0);
         assertThat(result, is(expected));
     }
 
     @Test
     public void whenUseGetOperationAndExecuteSubtract() {
-        StorageOperators so = new StorageOperators(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        IOperation subtract = new StorageOperators.SubOperation(calc, "-");
+        storage.addOperator(subtract);
         Double expected = 6.0;
-        Double result = so.getOperation("-").execute(8.0, 2.0);
+        Double result = storage.getOperation("-").execute(8.0, 2.0);
         assertThat(result, is(expected));
     }
 
     @Test
     public void whenUseGetOperationAndExecuteMultiple() {
-        StorageOperators so = new StorageOperators(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        IOperation multiple = new StorageOperators.MultOperation(calc, "*");
+        storage.addOperator(multiple);
         Double expected = 16.0;
-        Double result = so.getOperation("*").execute(8.0, 2.0);
+        Double result = storage.getOperation("*").execute(8.0, 2.0);
         assertThat(result, is(expected));
     }
 
     @Test
     public void whenUseGetOperationAndExecuteDivision() {
-        StorageOperators so = new StorageOperators(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        IOperation division = new StorageOperators.DivOperation(calc, "/");
+        storage.addOperator(division);
         Double expected = 4.0;
-        Double result = so.getOperation("/").execute(8.0, 2.0);
+        Double result = storage.getOperation("/").execute(8.0, 2.0);
         assertThat(result, is(expected));
     }
 }

@@ -30,7 +30,10 @@ public class InteractCalcTest {
 
     @Test
     public void whenUseRunAndInput1Plus2() {
-        InteractCalc iCalc = new InteractCalc(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        storage.addOperator(new StorageOperators.AddOperation(calc, "+"));
+        InteractCalc iCalc = new InteractCalc(storage);
         String input = new StringJoiner(LS)
                 .add("1 + 2")
                 .add("q").toString();
@@ -50,7 +53,10 @@ public class InteractCalcTest {
 
     @Test
     public void whenUseRunAndInputHint() {
-        InteractCalc iCalc = new InteractCalc(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        storage.addOperator(new StorageOperators.AddOperation(calc, "+"));
+        InteractCalc iCalc = new InteractCalc(storage);
         String input = new StringJoiner(LS)
                 .add("h")
                 .add("")
@@ -70,7 +76,10 @@ public class InteractCalcTest {
 
     @Test
     public void whenUseRunAndInputQ() {
-        InteractCalc iCalc = new InteractCalc(new Calculator());
+        Calculator calc = new Calculator();
+        StorageOperators storage = new StorageOperators();
+        storage.addOperator(new StorageOperators.AddOperation(calc, "+"));
+        InteractCalc iCalc = new InteractCalc(storage);
         String input = new StringJoiner(LS)
                 .add("q")
                 .toString();

@@ -29,23 +29,21 @@ public class ParserTest {
     }
 
     @Test
-    public void whenParseExpressionFirstOperandIsRThenFirstOperandIsNull() {
+    public void whenParseExpressionFirstOperandIsRThenSecondOperandIsTwo() {
         Parser parser = new Parser();
         String expression = "r + 2.0";
         parser.parse(expression);
-        assertThat(parser.firstOperand(), is((Double) null));
         assertThat(parser.secondOperand(), is(2.0));
         assertThat(parser.operator(), is("+"));
         assertThat(parser.isNotFirst(), is(true));
     }
 
     @Test
-    public void whenParseExpressionSecondOperandIsRThenSecondOperandIsNull() {
+    public void whenParseExpressionSecondOperandIsRThenFirstOperandIsOne() {
         Parser parser = new Parser();
         String expression = "1.0 + r";
         parser.parse(expression);
         assertThat(parser.firstOperand(), is(1.0));
-        assertThat(parser.secondOperand(), is((Double) null));
         assertThat(parser.operator(), is("+"));
         assertThat(parser.isNotSecond(), is(true));
     }

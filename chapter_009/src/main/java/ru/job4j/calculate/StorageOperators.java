@@ -2,6 +2,7 @@ package ru.job4j.calculate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Storage operators.
@@ -12,37 +13,33 @@ import java.util.Map;
 public class StorageOperators {
 
     private Map<String, IOperation> operators = new HashMap<>();
-    private Calculator calculator;
-
-    public StorageOperators(final Calculator calculator) {
-        this.calculator = calculator;
-        this.fillOperators();
-    }
-
-    /**
-     * The filling of storage operators.
-     */
-    private void fillOperators() {
-        this.operators.put("+", new AddOperation());
-        this.operators.put("-", new SubOperation());
-        this.operators.put("*", new MultOperation());
-        this.operators.put("/", new DivOperation());
-    }
 
     public IOperation getOperation(String operator) {
         return this.operators.get(operator);
+    }
+
+    public void addOperator(IOperation newOperator) {
+        this.operators.put(newOperator.getSign(), newOperator);
+    }
+
+    public Set<String> allOperators() {
+        return this.operators.keySet();
     }
 
     /**
      * Internal class for storage.
      * Class for addition operation.
      */
-    private class AddOperation implements IOperation {
+    public static class AddOperation extends BaseOperation {
+
+        public AddOperation(Calculator calc, String sign) {
+            super(calc, sign);
+        }
 
         @Override
         public Double execute(Double... operands) {
-            calculator.add(operands[0], operands[1]);
-            return calculator.getResult();
+            getCalc().add(operands[0], operands[1]);
+            return getCalc().getResult();
         }
     }
 
@@ -50,12 +47,16 @@ public class StorageOperators {
      * Internal class for storage.
      * Class for subtraction operation.
      */
-    private class SubOperation implements IOperation {
+    public static class SubOperation extends BaseOperation {
+
+        public SubOperation(Calculator calc, String sign) {
+            super(calc, sign);
+        }
 
         @Override
         public Double execute(Double... operands) {
-            calculator.subtract(operands[0], operands[1]);
-            return calculator.getResult();
+            getCalc().subtract(operands[0], operands[1]);
+            return getCalc().getResult();
         }
     }
 
@@ -63,12 +64,16 @@ public class StorageOperators {
      * Internal class for storage.
      * Class for multiplication operation.
      */
-    private class MultOperation implements IOperation {
+    public static class MultOperation extends BaseOperation {
+
+        public MultOperation(Calculator calc, String sign) {
+            super(calc, sign);
+        }
 
         @Override
         public Double execute(Double... operands) {
-            calculator.multiple(operands[0], operands[1]);
-            return calculator.getResult();
+            getCalc().multiple(operands[0], operands[1]);
+            return getCalc().getResult();
         }
     }
 
@@ -76,12 +81,16 @@ public class StorageOperators {
      * Internal class for storage.
      * Class for division operation.
      */
-    private class DivOperation implements IOperation {
+    public static class DivOperation extends BaseOperation {
+
+        public DivOperation(Calculator calc, String sign) {
+            super(calc, sign);
+        }
 
         @Override
         public Double execute(Double... operands) {
-            calculator.div(operands[0], operands[1]);
-            return calculator.getResult();
+            getCalc().div(operands[0], operands[1]);
+            return getCalc().getResult();
         }
     }
 }

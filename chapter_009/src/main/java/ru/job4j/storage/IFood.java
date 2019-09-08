@@ -1,5 +1,8 @@
 package ru.job4j.storage;
 
+import ru.job4j.storage.extension.Coldable;
+import ru.job4j.storage.extension.Reproducible;
+
 import java.time.LocalDateTime;
 
 /**
@@ -8,7 +11,7 @@ import java.time.LocalDateTime;
  *@since 05.09.2019
  *@version 0.1
  */
-public interface IFood {
+public interface IFood extends Reproducible, Coldable {
 
     /**
      * To obtain the name of the product.

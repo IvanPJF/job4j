@@ -1,6 +1,9 @@
 package ru.job4j.storage.extension;
 
+import ru.job4j.storage.IFood;
 import ru.job4j.storage.IStorage;
+
+import java.util.List;
 
 /**
  * Abstract class decorator for storage.
@@ -14,5 +17,10 @@ public abstract class StorageDecorator implements IStorage {
 
     public StorageDecorator(IStorage storage) {
         this.wrapper = storage;
+    }
+
+    @Override
+    public List<IFood> takeAllFood() {
+        return wrapper.takeAllFood();
     }
 }

@@ -38,4 +38,6 @@ public interface IStorage {
      * @return
      */
     List<IFood> getStorage();
+
+    List<IFood> takeAllFood();
 }

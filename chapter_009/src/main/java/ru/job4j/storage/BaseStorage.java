@@ -76,6 +76,13 @@ public abstract class BaseStorage implements IStorage {
         return this.storage;
     }
 
+    @Override
+    public List<IFood> takeAllFood() {
+        List<IFood> result = new LinkedList<>(this.storage);
+        this.storage.clear();
+        return result;
+    }
+
     /**
      * To obtain the lower threshold of the expiration date.
      * @return

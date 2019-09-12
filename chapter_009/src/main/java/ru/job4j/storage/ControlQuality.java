@@ -1,6 +1,7 @@
 package ru.job4j.storage;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -60,5 +61,15 @@ public class ControlQuality {
      */
     public List<IStorage> getStorages() {
         return this.storages;
+    }
+
+    public void resort(LocalDateTime currentDate) {
+        List<IFood> allFoods = new LinkedList<>();
+        for (IStorage storage : this.storages) {
+            allFoods.addAll(storage.takeNotSuitable(currentDate));
+        }
+        for (IFood food : allFoods) {
+            put(food, currentDate);
+        }
     }
 }

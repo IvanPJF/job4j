@@ -133,4 +133,27 @@ public class ControlQualityTest {
         assertThat(result, is(trash));
         assertThat(storageTrash, is(expected));
     }
+
+    @Test
+    public void whenResortFoodThenWaterMovesFromWarehouseToShopAndMilkMovesFromWarehouseToTrash() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        IStorage warehouse = new Warehouse(new ArrayList<>(), 0, 25);
+        IStorage shop = new Shop(new ArrayList<>(), 25, 75);
+        IStorage trash = new Trash(new ArrayList<>());
+        IFood water = new Food("Water", currentDate.minusDays(5), currentDate.plusDays(5), 10, new Discount(50));
+        IFood milk = new Food("Milk", currentDate.minusDays(5), currentDate.minusDays(1), 10, new Discount(50));
+        warehouse.add(water);
+        warehouse.add(milk);
+        ControlQuality controlQuality = new ControlQuality(Arrays.asList(warehouse, shop, trash));
+        controlQuality.resort(currentDate);
+        List<IFood> resultWarehouse = warehouse.getStorage();
+        List<IFood> resultShop = shop.getStorage();
+        List<IFood> resultTrash = trash.getStorage();
+        List<IFood> expectedWarehouse = new ArrayList<>();
+        List<IFood> expectedShop = new ArrayList<>(Collections.singletonList(water));
+        List<IFood> expectedTrash = new ArrayList<>(Collections.singletonList(milk));
+        assertThat(resultWarehouse, is(expectedWarehouse));
+        assertThat(resultShop, is(expectedShop));
+        assertThat(resultTrash, is(expectedTrash));
+    }
 }

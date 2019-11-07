@@ -60,6 +60,7 @@
         <module>chapter_008</module>
         <module>chapter_009</module>
         <module>chapter_010</module>
+        <module>chapter_011</module>
     </modules>
 
     <build>
@@ -82,6 +83,7 @@
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
+                            <excludes>**/module-info.java</excludes>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         </configuration>
                         <goals>
@@ -108,6 +110,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
             </plugin>
         </plugins>
     </build>

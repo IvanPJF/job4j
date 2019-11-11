@@ -31,7 +31,7 @@ public class RectangleMove implements Runnable {
     public void run() {
         int trendX = random.nextInt(3) + 3;
         int trendY = random.nextInt(3) + 3;
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             double newPositionX = rect.getX() + trendX;
             double newPositionY = rect.getY() + trendY;
             rect.setX(newPositionX);
@@ -45,7 +45,7 @@ public class RectangleMove implements Runnable {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }

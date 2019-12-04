@@ -24,7 +24,11 @@ public class SimpleBlockingQueueTest {
         });
         Thread consumer = new Thread(() -> {
             while (inList.size() != outList.size()) {
-                outList.add(queue.poll());
+                try {
+                    outList.add(queue.poll());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         producer.start();
@@ -47,7 +51,11 @@ public class SimpleBlockingQueueTest {
         });
         Thread consumer = new Thread(() -> {
             while (inList.size() != outList.size()) {
-                outList.add(queue.poll());
+                try {
+                    outList.add(queue.poll());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         producer.start();

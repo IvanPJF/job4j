@@ -26,15 +26,12 @@ public class SimpleBlockingQueue<T> {
 
     /**
      * Gets an item from a blocking queue.
+     *
      * @return
      */
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         while (this.queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            wait();
         }
         T elem = this.queue.poll();
         notify();
@@ -43,6 +40,7 @@ public class SimpleBlockingQueue<T> {
 
     /**
      * Inserts an item into a blocking queue.
+     *
      * @param value
      */
     public synchronized void offer(T value) {

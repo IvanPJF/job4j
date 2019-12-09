@@ -20,7 +20,7 @@ public class NonBlockingCacheTest {
     public void whenChangeBaseInTwoThreadThenOptimisticException() throws InterruptedException {
         final NonBlockingCache cache = new NonBlockingCache();
         AtomicReference<Exception> exception = new AtomicReference<>();
-        int size = 500;
+        int size = 5000;
         for (int i = 0; i < size; i++) {
             cache.add(new Base(i, "Main"));
         }

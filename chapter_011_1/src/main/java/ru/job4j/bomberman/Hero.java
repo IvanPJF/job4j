@@ -7,10 +7,15 @@ package ru.job4j.bomberman;
  * @version 0.1
  * @since 16.12.2019
  */
-public abstract class BaseBomber implements IBomber {
+public class Hero implements IHero {
 
     private final Cell pos = new Cell();
     private final Cell tryWay = new Cell();
+
+    @Override
+    public IHero createNewInstance() {
+        return new Hero();
+    }
 
     /**
      * Returns the current bomberman position on the board.
@@ -35,13 +40,12 @@ public abstract class BaseBomber implements IBomber {
 
     /**
      * Offers a cell for the next move.
-     * The choice of direction for the move is set in the {@link #choiceWay} method.
      *
      * @return
      */
     @Override
-    public Cell step() {
-        Cell cellWay = choiceWay().getCell();
+    public Cell step(Way way) {
+        Cell cellWay = way.getCell();
         this.tryWay.setX(this.pos.getX() + cellWay.getX());
         this.tryWay.setY(this.pos.getY() + cellWay.getY());
         return this.tryWay;

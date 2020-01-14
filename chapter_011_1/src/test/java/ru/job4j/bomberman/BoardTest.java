@@ -41,4 +41,11 @@ public class BoardTest {
         Cell result = board.lockFreeCell();
         assertThat(result, is((Cell) null));
     }
+
+    @Test
+    public void whenLockFreeCellInReverseOrderThenCell22() {
+        IBoard board = new Board(3, 3);
+        Cell result = board.lockFreeCell(true);
+        assertThat(result, is(new Cell(2, 2)));
+    }
 }

@@ -7,7 +7,9 @@ package ru.job4j.bomberman;
  * @version 0.1
  * @since 16.12.2019
  */
-public interface IBomber {
+public interface IHero {
+
+    IHero createNewInstance();
 
     /**
      * Returns the current bomberman position on the board.
@@ -25,17 +27,8 @@ public interface IBomber {
 
     /**
      * Offers a cell for the next move.
-     * The choice of direction for the move is set in the {@link #choiceWay} method.
      *
      * @return
      */
-    Cell step();
-
-    /**
-     * The choice of direction for the move.
-     * The result of choosing the direction of the path should be used in the method {@link #step}.
-     *
-     * @return
-     */
-    Way choiceWay();
+    Cell step(Way way);
 }

@@ -37,15 +37,11 @@ public class Board implements IBoard {
      * @param srcPos  Source position.
      * @param destPos Destination.
      * @return
-     * @throws InterruptedException
      */
     @Override
-    public boolean move(Cell srcPos, Cell destPos) throws InterruptedException {
+    public boolean move(Cell srcPos, Cell destPos) {
         boolean isMove = false;
-        int destX = destPos.getX();
-        int destY = destPos.getY();
-        if (isValidCoordinate(destX, destY)
-                && this.board[destX][destY].tryLock(500, TimeUnit.MILLISECONDS)) {
+        if (tryOccupy(destPos)) {
             this.board[srcPos.getX()][srcPos.getY()].unlock();
             isMove = true;
         }
@@ -83,5 +79,39 @@ public class Board implements IBoard {
             }
         }
         return null;
+    }
+
+    @Override
+    public Cell lockFreeCell(boolean isReverseOrderFind) {
+        return isReverseOrderFind ? reverseOrderFind() : lockFreeCell();
+    }
+
+    private Cell reverseOrderFind() {
+        for (int out = this.board.length - 1; out >= 0; out--) {
+            for (int in = this.board[out].length - 1; in >= 0; in--) {
+                try {
+                    if (this.board[out][in].tryLock(500, TimeUnit.MILLISECONDS)) {
+                        return new Cell(out, in);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean tryOccupy(Cell target) {
+        boolean result = false;
+        int x = target.getX();
+        int y = target.getY();
+        try {
+            result = isValidCoordinate(x, y)
+                    && this.board[x][y].tryLock(500, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return result;
     }
 }

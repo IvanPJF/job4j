@@ -15,9 +15,8 @@ public interface IBoard {
      * @param srcPos  Source position.
      * @param destPos Destination.
      * @return Return{true} - if the move is completed successfully, else {false}.
-     * @throws InterruptedException
      */
-    boolean move(Cell srcPos, Cell destPos) throws InterruptedException;
+    boolean move(Cell srcPos, Cell destPos);
 
     /**
      * Blocks the first non-locked field cell.
@@ -25,4 +24,8 @@ public interface IBoard {
      * @return Blocked field cell.
      */
     Cell lockFreeCell();
+
+    Cell lockFreeCell(boolean isReverseOrderFind);
+
+    boolean tryOccupy(Cell target);
 }

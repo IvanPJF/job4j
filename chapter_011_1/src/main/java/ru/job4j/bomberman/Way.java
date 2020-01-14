@@ -1,5 +1,7 @@
 package ru.job4j.bomberman;
 
+import java.util.Random;
+
 /**
  * Class enum Way.
  * To indicate the direction of movement.
@@ -16,6 +18,7 @@ public enum Way {
     RIGHT(new Cell(1, 0));
 
     private final Cell cell;
+    private static final Random RANDOM = new Random();
 
     Way(Cell cell) {
         this.cell = cell;
@@ -23,5 +26,9 @@ public enum Way {
 
     Cell getCell() {
         return this.cell;
+    }
+
+    static Way randomWay() {
+        return values()[RANDOM.nextInt(values().length)];
     }
 }
